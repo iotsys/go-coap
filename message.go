@@ -447,10 +447,14 @@ func parseMessage(data []byte) (rv Message, err error) {
 		return rv, ErrInvalidTokenLen
 	}
 
+	if tokenLen > 0 {
+        rv.Token = data[4: 4+tokenLen]
+    }
+
 	rv.Code = COAPCode(data[1])
 	rv.MessageID = binary.BigEndian.Uint16(data[2:4])
 
-	b := data[4:]
+	b := data[4 + tokenLen:]
 	prev := 0
 	for len(b) > 0 {
 		if b[0] == 0xff {
