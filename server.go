@@ -26,7 +26,7 @@ func FuncHandler(f func(l *net.UDPConn, a *net.UDPAddr, m *Message) *Message) Ha
 	return funcHandler(f)
 }
 
-func handlePacket(l *net.UDPConn, data []byte, u *net.UDPAddr,
+func HandlePacket(l *net.UDPConn, data []byte, u *net.UDPAddr,
 	rh Handler) {
 
 	msg, err := parseMessage(data)
@@ -86,7 +86,7 @@ func ListenAndServe(n, addr string, rh Handler) error {
 		if err == nil {
 			tmp := make([]byte, nr)
 			copy(tmp, buf)
-			go handlePacket(l, tmp, addr, rh)
+			go HandlePacket(l, tmp, addr, rh)
 		}
 	}
 }
